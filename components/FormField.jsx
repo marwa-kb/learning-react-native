@@ -27,7 +27,7 @@ const FormField = ({ title, value, placeholder, handleChangeText, otherStyles, .
 				)}
 			</View>
 		</View>
-		)
+	);
 }
 
-export default FormField
+export default FormField;
