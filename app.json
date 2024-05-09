@@ -25,6 +25,11 @@
       },
 	  "package": "com.jsm.aora-app"
     },
+	"androidNavigationBar": {
+	   "visible": true,
+	   "barStyle": "light-content",
+	   "backgroundColor": "#161622"
+	},
     "web": {
       "favicon": "./assets/favicon.png"
     },
