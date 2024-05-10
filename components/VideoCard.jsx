@@ -1,11 +1,24 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import { icons } from '../constants';
 import { useState } from "react";
 import { ResizeMode, Video } from 'expo-av';
+import { useGlobalContext } from '../context/GlobalProvider';
+import { likePost } from '../lib/appwrite';
 
 const VideoCard = (props) => {
-	const { video: { title, thumbnail, video, creator: { username, avatar }} } = props;
+	const { user } = useGlobalContext();
+	const { video: { title, thumbnail, video, liked, $id, creator: { username, avatar }} } = props;
 	const [play, setPlay] = useState(false);
+	const [isLiked, setIsLiked] = useState(liked.filter((item) => item === user.$id).length ? true : false);
+
+	const heartPost = async () => {
+		try {
+			await likePost($id, user.$id);
+			setIsLiked(!isLiked);
+		} catch (error) {
+			Alert.alert("Error", "Please try again");			
+		}
+	}
 
 	return (
 		<View className="flex-col items-center px-4 mb-14">
@@ -35,13 +48,16 @@ const VideoCard = (props) => {
 					</View>
 				</View>
 
-				<View className="pt-2">
+				<TouchableOpacity
+					className="pt-2"
+					onPress={heartPost}
+				>
 					<Image
-						source={icons.menu}
+						source={isLiked ? icons.fullHeart : icons.emptyHeart}
 						className="w-5 h-5"
 						resizeMode="contain"
 					/>
-				</View>
+				</TouchableOpacity>
 			</View>
 
 			{
