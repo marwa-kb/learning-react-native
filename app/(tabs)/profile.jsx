@@ -16,9 +16,11 @@ const Profile = () => {
 	const { data: posts, refetch } = useAppwrite(() => getUserPosts(user.$id));
 
 	useFocusEffect(
-		useCallback(() => refetch(), [])
+		useCallback(() => {
+			refetch()
+		}, [])
 	);
-
+	
 	const logOut = async () => {
 		await signOut();
 		setUser(null);

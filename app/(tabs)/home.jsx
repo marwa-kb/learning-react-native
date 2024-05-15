@@ -19,7 +19,9 @@ const Home = () => {
 	const [refreshing, setRefreshing] = useState(false);
 
 	useFocusEffect(
-		useCallback(() => refetch(), [])
+		useCallback(() => {
+			refetch()
+		}, [])
 	);
 
 	const onRefresh = async () => {
