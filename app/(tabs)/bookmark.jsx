@@ -1,25 +1,30 @@
+import { useState, useCallback } from "react";
 import { View, Text, FlatList, Image, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SearchInput from "../../components/SearchInput";
-import { images } from "../../constants";
+import { useFocusEffect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import EmptyState from "../../components/EmptyState";
-import { useState } from "react";
 import { getUserLikedPosts } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
-import VideoCard from "../../components/VideoCard";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { images } from "../../constants";
+import EmptyState from "../../components/EmptyState";
+import VideoCard from "../../components/VideoCard";
+import SearchInput from "../../components/SearchInput";
 
 const Bookmark = () => {
 	const { user } = useGlobalContext();
 	const { data: posts, refetch } = useAppwrite(() => getUserLikedPosts(user.$id));
 	const [refreshing, setRefreshing] = useState(false);
 
-	const onFrefresh = async () => {
+	useFocusEffect(
+		useCallback(() => refetch(), [])
+	);
+
+	const onRefresh = () => {
 		setRefreshing(true);
-		await refetch();
+		refetch();
 		setRefreshing(false);
-	}
+	};
 
 	return (
 		<SafeAreaView className="bg-primary h-full">
@@ -52,7 +57,7 @@ const Bookmark = () => {
 						subtitle="Browse videos to find your favorites!"
 					/>
 				)}
-				refreshControl={<RefreshControl refreshing={refreshing} onFrefresh={onFrefresh} />}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 			/>
 
 			<StatusBar backgroundColor="#161622" style="light" />

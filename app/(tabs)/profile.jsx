@@ -1,18 +1,23 @@
-import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
+import { useCallback } from "react";
+import { View, FlatList, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import useAppwrite from "../../lib/useAppwrite";
-import { getUserPosts, signOut } from "../../lib/appwrite";
+import { router, useFocusEffect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import EmptyState from "../../components/EmptyState";
-import VideoCard from "../../components/VideoCard";
+import { getUserPosts, signOut } from "../../lib/appwrite";
+import useAppwrite from "../../lib/useAppwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { icons } from "../../constants";
+import VideoCard from "../../components/VideoCard";
 import InfoBox from "../../components/InfoBox";
-import { router } from "expo-router";
+import EmptyState from "../../components/EmptyState";
 
 const Profile = () => {
 	const { user, setUser, setIsLoggedIn } = useGlobalContext();
-	const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
+	const { data: posts, refetch } = useAppwrite(() => getUserPosts(user.$id));
+
+	useFocusEffect(
+		useCallback(() => refetch(), [])
+	);
 
 	const logOut = async () => {
 		await signOut();

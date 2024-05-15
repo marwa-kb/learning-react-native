@@ -1,17 +1,19 @@
-import { useLocalSearchParams } from "expo-router";
-import { View, Text, FlatList } from "react-native";
+import { useState, useEffect } from "react";
+import { View, Text, FlatList, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import useAppwrite from "../../lib/useAppwrite";
-import { searchPosts, searchLikedPosts } from "../../lib/appwrite";
-import { useEffect } from "react";
+import { useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { searchPosts, searchLikedPosts } from "../../lib/appwrite";
+import useAppwrite from "../../lib/useAppwrite";
+import { useGlobalContext } from "../../context/GlobalProvider";
 import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
 import VideoCard from "../../components/VideoCard";
-import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Search = () => {
 	const { user } = useGlobalContext();
+	const [refreshing, setRefreshing] = useState(false);
+
 	const { query, searchType } = useLocalSearchParams();
 	let fetchedData = {};
 	if (searchType === "liked")
@@ -19,11 +21,16 @@ const Search = () => {
 	else
 		fetchedData = useAppwrite(() => searchPosts(query));
 	const { data: posts, refetch } = fetchedData;
-	console.log("DATA", posts)
 
 	useEffect(() => {
 		refetch();
-	}, [query]);	
+	}, [query]);
+
+	const onRefresh = async () => {
+		setRefreshing(true);
+		await refetch();
+		setRefreshing(false);
+	};
 
 	return (
 		<SafeAreaView className="bg-primary h-full">
@@ -48,6 +55,7 @@ const Search = () => {
 						subtitle="No videos found for this search query"
 					/>
 				)}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 			/>
 
 			<StatusBar backgroundColor="#161622" style="light" />

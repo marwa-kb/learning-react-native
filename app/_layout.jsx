@@ -1,7 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { SplashScreen, Stack } from 'expo-router';
-import { useFonts } from "expo-font";
 import { useEffect } from "react";
+import { SplashScreen, Stack } from "expo-router";
+import { useFonts } from "expo-font";
 import GlobalProvider from "../context/GlobalProvider";
 
 SplashScreen.preventAutoHideAsync();
@@ -43,12 +42,3 @@ const RootLayout = () => {
 };
 
 export default RootLayout;
-
-const styles = StyleSheet.create({
-	container: {
-		display: "flex",
-		alignItems: "center",
-		justifyContent: "center",
-		flex: 1
-	}
-});

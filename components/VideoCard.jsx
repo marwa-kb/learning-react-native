@@ -1,30 +1,40 @@
-import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
-import { icons } from '../constants';
-import { useState } from "react";
-import { ResizeMode, Video } from 'expo-av';
-import { useGlobalContext } from '../context/GlobalProvider';
-import { likePost } from '../lib/appwrite';
+import { useState, useEffect } from "react";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
+import { ResizeMode, Video } from "expo-av";
+import { likePost, dislikePost } from "../lib/appwrite";
+import { useGlobalContext } from "../context/GlobalProvider";
+import { icons } from "../constants";
 
 const VideoCard = (props) => {
 	const { user } = useGlobalContext();
 	const { video: { title, thumbnail, video, liked, $id, creator: { username, avatar }} } = props;
 	const [play, setPlay] = useState(false);
-	const [isLiked, setIsLiked] = useState(liked.filter((item) => item === user.$id).length ? true : false);
+	const [isLiked, setIsLiked] = useState(liked.includes(user?.$id) ? true : false);
 
 	const heartPost = async () => {
 		try {
-			await likePost($id, user.$id);
-			setIsLiked(!isLiked);
+			if (isLiked)
+				await dislikePost($id, user.$id);
+			else
+				await likePost($id, user.$id);
+			setIsLiked(prev => !prev);
 		} catch (error) {
 			Alert.alert("Error", "Please try again");			
 		}
-	}
+	};
+
+	useEffect(() => {
+		setIsLiked(liked.includes(user?.$id) ? true : false);
+	}, [liked]);	
 
 	return (
 		<View className="flex-col items-center px-4 mb-14">
 			<View className="flex-row gap-3 items-start">
 				<View className="justify-center items-center flex-row flex-1">
-					<View className="w-[46px] h-[46px] rounded-lg border border-secondary flex justify-center items-center p-0.5">
+					<View
+						className={`w-[46px] h-[46px] rounded-lg border border-secondary
+									flex justify-center items-center p-0.5`}
+					>
 						<Image
 							source={{ uri: avatar }}
 							className="w-full h-full rounded-lg"
