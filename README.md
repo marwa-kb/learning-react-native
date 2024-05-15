@@ -1,5 +1,5 @@
 Thanks to JavaScript Mastery's [tutorial](https://youtu.be/ZBCUegTZF7M?si=Whq0Tl7VqPPd5Rxt), I am learning React Native by building a Full Stack React Native App.
-![Screenshot_20240515_134839_Expo Go](https://github.com/marwa-kb/learning-react-native/assets/68017133/e4fd5290-b685-4f5d-b2fc-67c38c3bd5a9)
+<img src="https://github.com/marwa-kb/learning-react-native/assets/68017133/e4fd5290-b685-4f5d-b2fc-67c38c3bd5a9 width="200" />
 
 In this app, we implement many functionalities that are used in most apps:
 + sign up, sign in, log in, log out ![Screenshot_20240515_134711_Expo Go](https://github.com/marwa-kb/learning-react-native/assets/68017133/1f0b07a1-53e2-4b25-a488-1aa39ed65681)
