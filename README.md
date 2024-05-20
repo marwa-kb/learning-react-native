@@ -1,3 +1,5 @@
+# Learning: React Native Full Stack App
+
 Thanks to JavaScript Mastery's [tutorial](https://youtu.be/ZBCUegTZF7M?si=Whq0Tl7VqPPd5Rxt), I am learning React Native by building a Full Stack React Native App.  
 Styling is done using NativeWind; I had never used Tailwind CSS before so it was nice discovering it.
 Data is stored in Appwrite.  
